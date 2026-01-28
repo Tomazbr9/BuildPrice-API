@@ -31,3 +31,12 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Env ###
+.env
+
+### Logs ###
+*.log
+
+### Lombok ###
+.lombok/

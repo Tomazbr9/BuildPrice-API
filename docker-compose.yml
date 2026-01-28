@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: buildprice-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: buildprice_db
+      POSTGRES_USER: buildprice_user
+      POSTGRES_PASSWORD: buildprice_pass
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - "postgres_data:/var/lib/postgresql/data"
+
+volumes:
+  postgres_data:

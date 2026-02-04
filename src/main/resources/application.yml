@@ -18,3 +18,11 @@ spring:
       max-file-size: 20MB
       max-request-size: 20MB
 
+  sinapi:
+    upload-dir: /tmp/sinapi
+
+  batch:
+    jdbc:
+      platform: postgresql
+      initialize-schema: always
+

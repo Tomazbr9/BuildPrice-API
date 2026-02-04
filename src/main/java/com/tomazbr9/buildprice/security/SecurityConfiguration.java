@@ -34,7 +34,7 @@ public class SecurityConfiguration {
 
     // Endpoints que exigem perfil de ADMIN
     public static final String[] ENDPOINTS_ADMIN = {
-            "/api/v1/admin/sinapi"
+            "/api/v1/admin/import"
     };
 
     @Bean

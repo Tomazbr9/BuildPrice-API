@@ -25,4 +25,6 @@ spring:
     jdbc:
       platform: postgresql
       initialize-schema: always
+    job:
+      enabled: false
 

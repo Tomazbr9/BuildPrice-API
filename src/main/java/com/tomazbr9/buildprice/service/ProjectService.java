@@ -9,6 +9,7 @@ import com.tomazbr9.buildprice.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -34,5 +35,32 @@ public class ProjectService {
 
     }
 
+    public List<ProjectResponseDTO> getProjects(UUID userId){
+
+        List<Project> projects = projectRepository.findByUser_id(userId).orElseThrow(() -> new RuntimeException("Projetos não encontrados"));
+
+        return projects.stream()
+                .map(project -> new ProjectResponseDTO(
+                        project.getId(),
+                        project.getNameWork(),
+                        project.getBdi(),
+                        project.getCreatedAt()
+                )).toList();
+    }
+
+    public ProjectResponseDTO getProject(UUID projectId, UUID userId){
+
+        Project project = projectRepository.findByIdAndUser_id(projectId, userId).orElseThrow(() -> new RuntimeException("Projeto não encontrado"));
+
+        return new ProjectResponseDTO(project.getId(), project.getNameWork(), project.getBdi(), project.getCreatedAt());
+    }
+
+    public void deleteProject(UUID projectId, UUID userId){
+
+        Project project = projectRepository.findByIdAndUser_id(projectId, userId).orElseThrow(() -> new RuntimeException("Projeto não encontrado"));
+
+        projectRepository.delete(project);
+
+    }
 
 }

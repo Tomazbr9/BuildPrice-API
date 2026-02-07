@@ -11,10 +11,14 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.item.Chunk;
+import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import java.util.List;
 
 @Configuration
 public class BatchConfig {
@@ -32,25 +36,34 @@ public class BatchConfig {
     }
 
     @Bean
-    public JpaItemWriter<SinapiItem> writer(EntityManagerFactory emf) {
-        JpaItemWriter<SinapiItem> writer = new JpaItemWriter<>();
-        writer.setEntityManagerFactory(emf);
-        return writer;
-    }
-
-    @Bean
     public Step sinapiStep(
             JobRepository jobRepository,
             PlatformTransactionManager transactionManager,
             SinapiItemReader reader,
             SinapiItemProcessor processor,
-            JpaItemWriter<SinapiItem> writer) {
+            ItemWriter<List<SinapiItem>> sinapiItemWriter) {
 
         return new StepBuilder("sinapiStep", jobRepository)
-                .<SinapiItemDTO, SinapiItem>chunk(200, transactionManager)
+                .<SinapiItemDTO, List<SinapiItem>>chunk(200, transactionManager)
                 .reader(reader)
                 .processor(processor)
-                .writer(writer)
+                .writer(sinapiItemWriter)
                 .build();
     }
+
+    @Bean
+    public ItemWriter<List<SinapiItem>> sinapiItemWriter(EntityManagerFactory emf) {
+
+        JpaItemWriter<SinapiItem> delegate = new JpaItemWriter<>();
+        delegate.setEntityManagerFactory(emf);
+
+        return chunk -> {
+            List<SinapiItem> flattenedItems = chunk.getItems().stream()
+                    .flatMap(List::stream)
+                    .toList();
+
+            delegate.write(new Chunk<>(flattenedItems));
+        };
+    }
+
 }

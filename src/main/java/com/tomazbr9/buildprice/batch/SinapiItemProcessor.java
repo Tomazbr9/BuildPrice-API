@@ -7,39 +7,32 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
 @StepScope
-public class SinapiItemProcessor implements ItemProcessor<SinapiItemDTO, SinapiItem> {
-
-    private Iterator<SinapiItem> currentIterator;
+public class SinapiItemProcessor
+        implements ItemProcessor<SinapiItemDTO, List<SinapiItem>> {
 
     @Override
-    public SinapiItem process(SinapiItemDTO item) {
+    public List<SinapiItem> process(SinapiItemDTO item) {
 
-        if (currentIterator == null || !currentIterator.hasNext()) {
-            List<SinapiItem> items = new ArrayList<>();
+        List<SinapiItem> items = new ArrayList<>();
 
-            item.pricesForUf().forEach((uf, price) -> {
-                if (price != null) {
-                    items.add(new SinapiItem(
-                            item.codSinapi(),
-                            item.description(),
-                            item.classification(),
-                            item.unit(),
-                            uf,
-                            price,
-                            item.taxRelief()
-                    ));
-                }
-            });
+        item.pricesForUf().forEach((uf, price) -> {
+            items.add(new SinapiItem(
+                    item.codSinapi(),
+                    item.description(),
+                    item.classification(),
+                    item.unit(),
+                    uf,
+                    price,
+                    item.taxRelief()
+            ));
+        });
 
-            currentIterator = items.iterator();
-        }
-
-        return currentIterator.hasNext() ? currentIterator.next() : null;
+        return items;
     }
 }
+
 

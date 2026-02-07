@@ -25,7 +25,6 @@ public class SinapiItemReader implements ItemReader<SinapiItemDTO>, ItemStream {
     private Workbook workbook;
     private Map<Integer, String> ufColumns = new LinkedHashMap<>();
 
-
     @Value("#{jobParameters['tempFile']}") private String filePath;
     @Value("#{jobParameters['sheetName']}") private String sheetName;
 
@@ -97,11 +96,10 @@ public class SinapiItemReader implements ItemReader<SinapiItemDTO>, ItemStream {
         Map<String, BigDecimal> prices = new HashMap<>();
 
         ufColumns.forEach((index, uf) -> {
+
             Cell cell = row.getCell(index);
 
-            if(cell != null){
-                prices.put(uf, parseBigDecimal(cell));
-            }
+            prices.put(uf, parseBigDecimal(cell));
 
         });
 
@@ -123,12 +121,13 @@ public class SinapiItemReader implements ItemReader<SinapiItemDTO>, ItemStream {
     }
 
     private BigDecimal parseBigDecimal(Cell cell) {
-        if (cell == null) return null;
+
+        if (cell == null) return new BigDecimal("0.0");
 
         DataFormatter formatter = new DataFormatter();
         String raw = formatter.formatCellValue(cell).trim();
 
-        if (raw.isEmpty()) return null;
+        if (raw.isEmpty()) return new BigDecimal("0.0");
 
         // remove espaços e símbolos comuns
         String value = raw

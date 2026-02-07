@@ -31,6 +31,10 @@ public class ProjectItem implements Serializable {
     @JoinColumn(name = "sinapi_item_id", nullable = false)
     private SinapiItem sinapiItem;
 
+    public ProjectItem(){
+
+    }
+
     public ProjectItem(UUID id, Integer quantity, BigDecimal price, Project project, SinapiItem sinapiItem) {
         this.id = id;
         this.quantity = quantity;

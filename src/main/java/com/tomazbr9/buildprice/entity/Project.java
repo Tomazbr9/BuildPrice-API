@@ -24,6 +24,15 @@ public class Project  implements Serializable {
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
+    @Column(name = "client_name")
+    private String clientName;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    @Column(nullable = false)
+    private String uf;
+
     @Column(nullable = false, precision = 5, scale = 2)
     private BigDecimal bdi;
 
@@ -35,10 +44,13 @@ public class Project  implements Serializable {
 
     }
 
-    public Project(UUID id, String nameWork, Instant createdAt, BigDecimal bdi, User user) {
+    public Project(UUID id, String nameWork, Instant createdAt, String clientName, String description, String uf, BigDecimal bdi, User user) {
         this.id = id;
         this.nameWork = nameWork;
         this.createdAt = createdAt;
+        this.clientName = clientName;
+        this.description = description;
+        this.uf = uf;
         this.bdi = bdi;
         this.user = user;
     }
@@ -65,6 +77,30 @@ public class Project  implements Serializable {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getUf() {
+        return uf;
+    }
+
+    public void setUf(String uf) {
+        this.uf = uf;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public BigDecimal getBdi() {

@@ -2,6 +2,7 @@ package com.tomazbr9.buildprice.controller;
 
 import com.tomazbr9.buildprice.dto.project.ProjectRequestDTO;
 import com.tomazbr9.buildprice.dto.project.ProjectResponseDTO;
+import com.tomazbr9.buildprice.dto.project.ProjectWithItemsResponseDTO;
 import com.tomazbr9.buildprice.security.model.UserDetailsImpl;
 import com.tomazbr9.buildprice.service.ProjectService;
 import org.springframework.http.HttpStatus;
@@ -41,9 +42,9 @@ public class ProjectController {
     }
 
     @GetMapping("/{projectId}")
-    public ResponseEntity<ProjectResponseDTO> getProject(@PathVariable UUID projectId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<ProjectWithItemsResponseDTO> getProject(@PathVariable UUID projectId, @AuthenticationPrincipal UserDetailsImpl userDetails){
 
-        ProjectResponseDTO response = service.getProject(projectId, userDetails.getId());
+        ProjectWithItemsResponseDTO response = service.getProject(projectId, userDetails.getId());
 
         return ResponseEntity.ok(response);
     }

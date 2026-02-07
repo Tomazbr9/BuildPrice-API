@@ -5,11 +5,9 @@ import com.tomazbr9.buildprice.dto.project_item.ItemResponseDTO;
 import com.tomazbr9.buildprice.entity.Project;
 import com.tomazbr9.buildprice.entity.ProjectItem;
 import com.tomazbr9.buildprice.entity.SinapiItem;
-import com.tomazbr9.buildprice.entity.User;
 import com.tomazbr9.buildprice.repository.ProjectItemRepository;
 import com.tomazbr9.buildprice.repository.ProjectRepository;
 import com.tomazbr9.buildprice.repository.SinapiItemRepository;
-import com.tomazbr9.buildprice.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -30,7 +28,7 @@ public class ProjectItemService {
 
     public ItemResponseDTO addItem(UUID sinapiItemId, ItemRequestDTO request, UUID userId){
 
-        Project project = projectRepository.findById(request.projectId()).orElseThrow(() -> new RuntimeException("Projeto não encontrado"));
+        Project project = projectRepository.findByIdAndUser_id(request.projectId(), userId).orElseThrow(() -> new RuntimeException("Projeto não encontrado"));
 
         SinapiItem sinapiItem = sinapiItemRepository.findById(sinapiItemId).orElseThrow(() -> new RuntimeException("Item não encontrado"));
 
@@ -38,8 +36,19 @@ public class ProjectItemService {
 
         ProjectItem savedItem = projectItemRepository.save(projectItem);
 
-        return new ItemResponseDTO(savedItem.getId(), savedItem.getQuantity(), savedItem.getPrice());
-    }
+        BigDecimal subtotal = savedItem.getPrice().multiply(BigDecimal.valueOf(savedItem.getQuantity()));
 
+        return new ItemResponseDTO(
+                savedItem.getId(),
+                sinapiItem.getCodSinapi(),
+                sinapiItem.getDescription(),
+                sinapiItem.getClassification(),
+                sinapiItem.getUnit(),
+                sinapiItem.getUf(),
+                savedItem.getQuantity(),
+                savedItem.getPrice(),
+                subtotal
+        );
+    }
 }
 

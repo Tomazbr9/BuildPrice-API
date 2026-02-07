@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 
 public record ProjectRequestDTO(
         String nameWork,
+        String clientName,
+        String description,
+        String uf,
         BigDecimal bdi
 ) {
 }

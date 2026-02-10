@@ -2,6 +2,12 @@ package com.tomazbr9.buildprice.service;
 
 import com.tomazbr9.buildprice.dto.sinapi.BatchStatusDTO;
 import com.tomazbr9.buildprice.dto.sinapi.ImportResponseDTO;
+import com.tomazbr9.buildprice.dto.user.UserResponseDTO;
+import com.tomazbr9.buildprice.entity.Role;
+import com.tomazbr9.buildprice.entity.User;
+import com.tomazbr9.buildprice.enums.RoleName;
+import com.tomazbr9.buildprice.repository.RoleRepository;
+import com.tomazbr9.buildprice.repository.UserRepository;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -13,6 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AdminService {
@@ -23,13 +30,17 @@ public class AdminService {
     private final JobLauncher jobLauncher;
     private final Job sinapiJob;
     private final JobExplorer jobExplorer;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
     List<String> TABS = Arrays.asList("ISD", "ICD", "ISE");
 
-    public AdminService(JobLauncher jobLauncher, Job sinapiJob, JobExplorer jobExplorer){
+    public AdminService(JobLauncher jobLauncher, Job sinapiJob, JobExplorer jobExplorer, UserRepository userRepository, RoleRepository roleRepository){
         this.jobLauncher = jobLauncher;
         this.sinapiJob = sinapiJob;
         this.jobExplorer = jobExplorer;
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     public ImportResponseDTO importSinapi(MultipartFile file, String tab) {
@@ -84,5 +95,20 @@ public class AdminService {
                 step != null ? step.getCommitCount() : 0,
                 step != null ? step.getExitStatus().getExitCode() : null
         );
+    }
+
+    public List<UserResponseDTO> getUsers(UUID userId){
+
+        userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        List<User> users = userRepository.findAll();
+
+        Role role = roleRepository.findByName(RoleName.ROLE_USER).orElseThrow(() -> new RuntimeException("Papel de usuário não encontrado"));
+
+        return users.stream()
+                .filter(user -> user.getRoles().contains(role))
+                .map(user -> new UserResponseDTO(user.getEmail()))
+                .toList();
+
     }
 }

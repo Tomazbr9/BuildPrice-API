@@ -25,7 +25,7 @@ public class SinapiJobCleanupListener implements JobExecutionListener {
                 Files.delete(path);
             }
         } catch (Exception e){
-            throw new RuntimeException("Erro ao remover arquivo temporario");
+            throw new FailedRemovingTempFileException("Erro ao remover arquivo temporario");
         }
     }
 

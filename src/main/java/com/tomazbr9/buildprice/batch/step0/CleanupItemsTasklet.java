@@ -1,4 +1,4 @@
-package com.tomazbr9.buildprice.batch.step2;
+package com.tomazbr9.buildprice.batch.step0;
 
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.configuration.annotation.StepScope;

@@ -7,6 +7,8 @@ import com.tomazbr9.buildprice.dto.project_item.ItemResponseDTO;
 import com.tomazbr9.buildprice.entity.Project;
 import com.tomazbr9.buildprice.entity.ProjectItem;
 import com.tomazbr9.buildprice.entity.User;
+import com.tomazbr9.buildprice.exception.ProjectNotFoundException;
+import com.tomazbr9.buildprice.exception.UserNotFoundException;
 import com.tomazbr9.buildprice.repository.ProjectItemRepository;
 import com.tomazbr9.buildprice.repository.ProjectRepository;
 import com.tomazbr9.buildprice.repository.UserRepository;
@@ -33,7 +35,7 @@ public class ProjectService {
 
     public ProjectResponseDTO createProject(ProjectRequestDTO request, UUID userId){
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 
         Project newProject = new Project(null, request.nameWork(), Instant.now(), request.clientName(), request.description(), request.uf(), request.bdi(), user);
 
@@ -45,7 +47,7 @@ public class ProjectService {
 
     public List<ProjectResponseDTO> getProjects(UUID userId){
 
-        List<Project> projects = projectRepository.findByUser_id(userId).orElseThrow(() -> new RuntimeException("Projetos não encontrados"));
+        List<Project> projects = projectRepository.findByUser_id(userId).orElseThrow(() -> new ProjectNotFoundException("Projetos não encontrados"));
 
         return projects.stream()
                 .map(project -> new ProjectResponseDTO(
@@ -61,7 +63,7 @@ public class ProjectService {
 
     public ProjectWithItemsResponseDTO getProject(UUID projectId, UUID userId){
 
-        Project project = projectRepository.findByIdAndUser_id(projectId, userId).orElseThrow(() -> new RuntimeException("Projeto não encontrado"));
+        Project project = projectRepository.findByIdAndUser_id(projectId, userId).orElseThrow(() -> new ProjectNotFoundException("Projeto não encontrado"));
 
         List<ProjectItem> items = projectItemRepository.findByProject_id(project.getId());
 
@@ -105,7 +107,7 @@ public class ProjectService {
 
     public void deleteProject(UUID projectId, UUID userId){
 
-        Project project = projectRepository.findByIdAndUser_id(projectId, userId).orElseThrow(() -> new RuntimeException("Projeto não encontrado"));
+        Project project = projectRepository.findByIdAndUser_id(projectId, userId).orElseThrow(() -> new ProjectNotFoundException("Projeto não encontrado"));
 
         projectRepository.delete(project);
 

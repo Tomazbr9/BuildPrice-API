@@ -2,6 +2,7 @@ package com.tomazbr9.buildprice.batch.step1;
 
 import com.github.pjfanning.xlsx.StreamingReader;
 import com.tomazbr9.buildprice.dto.sinapi.SinapiItemDTO;
+import com.tomazbr9.buildprice.exception.TabNotFound;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemReader;
@@ -68,7 +69,7 @@ public class SinapiItemReader implements ItemReader<SinapiItemDTO>, ItemStream {
 
         Sheet sheet = workbook.getSheet(sheetName);
 
-        if(sheet == null) throw new RuntimeException("Aba não encontrada");
+        if(sheet == null) throw new TabNotFound("Aba não encontrada");
 
         rowIterator = sheet.iterator();
 
@@ -152,9 +153,6 @@ public class SinapiItemReader implements ItemReader<SinapiItemDTO>, ItemStream {
             return new BigDecimal(value);
 
         } catch (NumberFormatException e) {
-            System.out.println(
-                    "⚠Valor numérico inválido ignorado: '" + raw + "'"
-            );
             return null;
         }
     }

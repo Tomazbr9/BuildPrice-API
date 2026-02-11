@@ -5,6 +5,8 @@ import com.tomazbr9.buildprice.dto.project_item.ItemResponseDTO;
 import com.tomazbr9.buildprice.entity.Project;
 import com.tomazbr9.buildprice.entity.ProjectItem;
 import com.tomazbr9.buildprice.entity.SinapiItem;
+import com.tomazbr9.buildprice.exception.ItemNotFoundException;
+import com.tomazbr9.buildprice.exception.ProjectNotFoundException;
 import com.tomazbr9.buildprice.repository.ProjectItemRepository;
 import com.tomazbr9.buildprice.repository.ProjectRepository;
 import com.tomazbr9.buildprice.repository.SinapiItemRepository;
@@ -28,9 +30,9 @@ public class ProjectItemService {
 
     public ItemResponseDTO addItem(UUID sinapiItemId, ItemRequestDTO request, UUID userId){
 
-        Project project = projectRepository.findByIdAndUser_id(request.projectId(), userId).orElseThrow(() -> new RuntimeException("Projeto não encontrado"));
+        Project project = projectRepository.findByIdAndUser_id(request.projectId(), userId).orElseThrow(() -> new ProjectNotFoundException("Projeto não encontrado"));
 
-        SinapiItem sinapiItem = sinapiItemRepository.findById(sinapiItemId).orElseThrow(() -> new RuntimeException("Item não encontrado"));
+        SinapiItem sinapiItem = sinapiItemRepository.findById(sinapiItemId).orElseThrow(() -> new ItemNotFoundException("Item não encontrado"));
 
         ProjectItem projectItem = new ProjectItem(null, request.quantity(), sinapiItem.getPrice(), project, sinapiItem);
 

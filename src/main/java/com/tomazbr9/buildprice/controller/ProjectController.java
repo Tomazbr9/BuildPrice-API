@@ -5,6 +5,7 @@ import com.tomazbr9.buildprice.dto.project.ProjectResponseDTO;
 import com.tomazbr9.buildprice.dto.project.ProjectWithItemsResponseDTO;
 import com.tomazbr9.buildprice.security.model.UserDetailsImpl;
 import com.tomazbr9.buildprice.service.ProjectService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,7 +26,7 @@ public class ProjectController {
 
     @PostMapping
     public ResponseEntity<ProjectResponseDTO> createProject(
-            @RequestBody ProjectRequestDTO request,
+            @RequestBody @Valid ProjectRequestDTO request,
             @AuthenticationPrincipal UserDetailsImpl userDetails){
 
         ProjectResponseDTO response = service.createProject(request, userDetails.getId());

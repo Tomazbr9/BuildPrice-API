@@ -46,18 +46,7 @@ public class SinapiItem implements Serializable {
 
     }
 
-    public SinapiItem(String codSinapi, String description, String classification, String unit, String uf, BigDecimal price, String taxRelief, LocalDate referenceMonth) {
-        this.codSinapi = codSinapi;
-        this.description = description;
-        this.classification = classification;
-        this.unit = unit;
-        this.uf = uf;
-        this.price = price;
-        this.taxRelief = taxRelief;
-        this.referenceMonth = referenceMonth;
-    }
-
-    public SinapiItem(UUID id, String codSinapi, String description, String classification, String unit, String uf, BigDecimal price, String taxRelief) {
+    public SinapiItem(UUID id, String codSinapi, String description, String classification, String unit, String uf, BigDecimal price, String taxRelief, LocalDate referenceMonth) {
         this.id = id;
         this.codSinapi = codSinapi;
         this.description = description;
@@ -66,6 +55,7 @@ public class SinapiItem implements Serializable {
         this.uf = uf;
         this.price = price;
         this.taxRelief = taxRelief;
+        this.referenceMonth = referenceMonth;
     }
 
     public UUID getId() {

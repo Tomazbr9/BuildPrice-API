@@ -1,4 +1,4 @@
-package com.tomazbr9.buildprice.service;
+package com.tomazbr9.buildprice.uit.service;
 
 import com.tomazbr9.buildprice.dto.project.ProjectRequestDTO;
 import com.tomazbr9.buildprice.entity.Project;
@@ -8,6 +8,7 @@ import com.tomazbr9.buildprice.exception.UserNotFoundException;
 import com.tomazbr9.buildprice.repository.ProjectItemRepository;
 import com.tomazbr9.buildprice.repository.ProjectRepository;
 import com.tomazbr9.buildprice.repository.UserRepository;
+import com.tomazbr9.buildprice.service.ProjectService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

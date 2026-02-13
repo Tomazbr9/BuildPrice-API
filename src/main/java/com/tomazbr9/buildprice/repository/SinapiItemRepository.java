@@ -10,4 +10,8 @@ import java.util.UUID;
 @Repository
 public interface SinapiItemRepository extends JpaRepository<SinapiItem, UUID> {
 
+    Optional<SinapiItem> findByCodSinapi(String codSinapi);
+
+
+
 }

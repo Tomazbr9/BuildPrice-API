@@ -1,4 +1,4 @@
-package com.tomazbr9.buildprice.service;
+package com.tomazbr9.buildprice.uit.service;
 
 import com.tomazbr9.buildprice.dto.auth.JwtTokenDTO;
 import com.tomazbr9.buildprice.dto.auth.LoginDTO;
@@ -12,6 +12,7 @@ import com.tomazbr9.buildprice.repository.UserRepository;
 import com.tomazbr9.buildprice.security.SecurityConfiguration;
 import com.tomazbr9.buildprice.security.jwt.JwtTokenService;
 import com.tomazbr9.buildprice.security.model.UserDetailsImpl;
+import com.tomazbr9.buildprice.service.AuthService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

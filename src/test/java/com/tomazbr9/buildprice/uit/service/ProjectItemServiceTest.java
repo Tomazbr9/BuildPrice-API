@@ -1,4 +1,4 @@
-package com.tomazbr9.buildprice.service;
+package com.tomazbr9.buildprice.uit.service;
 
 import com.tomazbr9.buildprice.dto.project_item.ItemRequestDTO;
 import com.tomazbr9.buildprice.entity.Project;
@@ -9,6 +9,7 @@ import com.tomazbr9.buildprice.exception.ProjectNotFoundException;
 import com.tomazbr9.buildprice.repository.ProjectItemRepository;
 import com.tomazbr9.buildprice.repository.ProjectRepository;
 import com.tomazbr9.buildprice.repository.SinapiItemRepository;
+import com.tomazbr9.buildprice.service.ProjectItemService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

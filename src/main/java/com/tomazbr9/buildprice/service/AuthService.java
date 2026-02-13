@@ -6,6 +6,7 @@ import com.tomazbr9.buildprice.dto.user.UserRequestDTO;
 import com.tomazbr9.buildprice.entity.Role;
 import com.tomazbr9.buildprice.entity.User;
 import com.tomazbr9.buildprice.enums.RoleName;
+import com.tomazbr9.buildprice.exception.EmailAlreadyExistsException;
 import com.tomazbr9.buildprice.exception.RoleNotFoundException;
 import com.tomazbr9.buildprice.repository.RoleRepository;
 import com.tomazbr9.buildprice.repository.UserRepository;
@@ -42,6 +43,10 @@ public class AuthService {
     public void registerUser(UserRequestDTO request){
 
         Role roleDefault = roleRepository.findByName(RoleName.ROLE_USER).orElseThrow(() -> new RoleNotFoundException("Papel de usuário não encontrado"));
+
+        if(userRepository.findByEmail(request.email()).isPresent()){
+            throw new EmailAlreadyExistsException("Email ja existe.");
+        }
 
         User user = new User(request.email(), securityConfiguration.passwordEncoder().encode(request.password()), Set.of(roleDefault));
 

@@ -22,6 +22,7 @@ public class SinapiItemProcessor
 
         item.pricesForUf().forEach((uf, price) -> {
             items.add(new SinapiItem(
+                    null,
                     item.codSinapi(),
                     item.description(),
                     item.classification(),

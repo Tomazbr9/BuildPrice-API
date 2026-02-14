@@ -49,8 +49,7 @@ class ProjectControllerIntegrationTest extends AbstractIntegrationTest {
         var user = TestUserFactory.createDefaultUser(
                 userRepository,
                 roleRepository,
-                passwordEncoder,
-                null
+                passwordEncoder
         );
 
         // 2 fazer login real e pegar token

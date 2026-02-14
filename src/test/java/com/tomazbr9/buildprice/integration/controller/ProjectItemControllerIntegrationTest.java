@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tomazbr9.buildprice.dto.project_item.ItemRequestDTO;
 import com.tomazbr9.buildprice.entity.Project;
 import com.tomazbr9.buildprice.entity.SinapiItem;
+import com.tomazbr9.buildprice.enums.RoleName;
 import com.tomazbr9.buildprice.integration.AbstractIntegrationTest;
 import com.tomazbr9.buildprice.repository.*;
 import com.tomazbr9.buildprice.util.TestAuthHelper;
@@ -47,8 +48,7 @@ class ProjectItemControllerIntegrationTest extends AbstractIntegrationTest {
         var user = TestUserFactory.createDefaultUser(
                 userRepository,
                 roleRepository,
-                passwordEncoder,
-                null
+                passwordEncoder
         );
 
         jwt = TestAuthHelper.getJwtToken(
@@ -118,11 +118,13 @@ class ProjectItemControllerIntegrationTest extends AbstractIntegrationTest {
     void shouldReturnNotFoundWhenProjectDoesNotBelongToUser() throws Exception {
 
         // cria outro usuário
-        var otherUser = TestUserFactory.createDefaultUser(
+        var otherUser = TestUserFactory.createUser(
+                "otherUser@email.com",
+                "123456",
                 userRepository,
                 roleRepository,
-                passwordEncoder,
-                "otherUser@gmail.com"
+                RoleName.ROLE_USER,
+                passwordEncoder
         );
 
         // cria projeto para outro usuário

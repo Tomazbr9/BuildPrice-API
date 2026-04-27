@@ -89,5 +89,9 @@ public class ProjectItemService {
         return item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity()));
     }
 
+//    private boolean checkIfThenItemIsInTheProject(Project project, SinapiItem sinapiItem){
+//
+//    }
+
 }
 

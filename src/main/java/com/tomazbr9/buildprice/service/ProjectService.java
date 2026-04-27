@@ -67,6 +67,8 @@ public class ProjectService {
 
         List<ProjectItem> items = projectItemRepository.findByProject_id(project.getId());
 
+        // PAREI AQUI
+
         List<ItemResponseDTO> itemsResponse = items.stream()
                 .map((item) -> {
 

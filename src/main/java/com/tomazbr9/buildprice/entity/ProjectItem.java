@@ -37,5 +37,4 @@ public class ProjectItem implements Serializable {
     @JoinColumn(name = "sinapi_item_id", nullable = false)
     private SinapiItem sinapiItem;
 
-
 }

@@ -43,9 +43,9 @@ public class ProjectController {
     }
 
     @GetMapping("/{projectId}")
-    public ResponseEntity<ProjectWithItemsResponseDTO> getProject(@PathVariable UUID projectId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<ProjectResponseDTO> getProject(@PathVariable UUID projectId, @AuthenticationPrincipal UserDetailsImpl userDetails){
 
-        ProjectWithItemsResponseDTO response = service.getProject(projectId, userDetails.getId());
+        ProjectResponseDTO response = service.getProject(projectId, userDetails.getId());
 
         return ResponseEntity.ok(response);
     }

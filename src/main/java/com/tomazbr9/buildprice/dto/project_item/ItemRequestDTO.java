@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 
 public record ItemRequestDTO(
-        UUID projectId,
+        UUID budgetId,
 
         @NotNull(message = "Quantidade do item é obrigatória")
         Integer quantity

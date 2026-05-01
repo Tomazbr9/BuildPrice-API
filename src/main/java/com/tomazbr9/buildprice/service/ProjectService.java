@@ -37,11 +37,11 @@ public class ProjectService {
 
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 
-        Project newProject = new Project(null, request.nameWork(), Instant.now(), request.clientName(), request.description(), request.uf(), request.bdi(), user);
+        Project newProject = new Project(null, request.nameWork(), Instant.now(), request.clientName(), request.description(), request.uf(), user);
 
         Project savedProject = projectRepository.save(newProject);
 
-        return new ProjectResponseDTO(savedProject.getId(), savedProject.getNameWork(), savedProject.getClientName(), savedProject.getDescription(), savedProject.getUf(), savedProject.getBdi(), savedProject.getCreatedAt());
+        return new ProjectResponseDTO(savedProject.getId(), savedProject.getNameWork(), savedProject.getClientName(), savedProject.getDescription(), savedProject.getUf(), savedProject.getCreatedAt());
 
     }
 
@@ -56,54 +56,20 @@ public class ProjectService {
                         project.getClientName(),
                         project.getDescription(),
                         project.getUf(),
-                        project.getBdi(),
                         project.getCreatedAt()
                 )).toList();
     }
 
-    public ProjectWithItemsResponseDTO getProject(UUID projectId, UUID userId){
+    public ProjectResponseDTO getProject(UUID projectId, UUID userId){
 
         Project project = projectRepository.findByIdAndUser_id(projectId, userId).orElseThrow(() -> new ProjectNotFoundException("Projeto não encontrado"));
 
-        List<ProjectItem> items = projectItemRepository.findByProject_id(project.getId());
-
-        // PAREI AQUI
-
-        List<ItemResponseDTO> itemsResponse = items.stream()
-                .map((item) -> {
-
-                    BigDecimal subtotal = item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity()));
-
-                    return new ItemResponseDTO(
-                        item.getId(),
-                        item.getSinapiItem().getCodSinapi(),
-                        item.getSinapiItem().getDescription(),
-                        item.getSinapiItem().getClassification(),
-                        item.getSinapiItem().getUnit(),
-                        item.getSinapiItem().getUf(),
-                        item.getQuantity(),
-                        item.getPrice(),
-                        subtotal
-                    );
-                }
-
-                ).toList();
-
-        BigDecimal totalWithOutBDI = calculateWithOutBDI(itemsResponse);
-        BigDecimal totalWithBDI = calculateWithBDI(totalWithOutBDI, project.getBdi());
-        BigDecimal grossMargin = calculeGrossMargin(totalWithOutBDI, totalWithBDI);
-
-        return new ProjectWithItemsResponseDTO(
+        return new ProjectResponseDTO(
                 project.getId(),
                 project.getNameWork(),
                 project.getClientName(),
                 project.getDescription(),
                 project.getUf(),
-                project.getBdi(),
-                itemsResponse,
-                totalWithOutBDI,
-                totalWithBDI,
-                grossMargin,
                 project.getCreatedAt());
     }
 

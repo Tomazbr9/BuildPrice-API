@@ -40,17 +40,8 @@ public class Project  implements Serializable {
     @Column(nullable = false)
     private String uf;
 
-    @Column(nullable = false, precision = 5, scale = 2)
-    private BigDecimal bdi;
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @PrePersist
-    public void prePersist(){
-        if(bdi == null){
-            bdi = BigDecimal.ZERO;
-        }
-    }
 }

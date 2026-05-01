@@ -44,7 +44,7 @@ class ProjectItemRepositoryIntegrationTest extends AbstractIntegrationTest {
         ProjectItem item = new ProjectItem();
         item.setQuantity(5);
         item.setPrice(new BigDecimal("100.50"));
-        item.setProject(project);
+
         item.setSinapiItem(sinapiItem);
 
         ProjectItem saved = projectItemRepository.save(item);
@@ -52,7 +52,6 @@ class ProjectItemRepositoryIntegrationTest extends AbstractIntegrationTest {
         assertNotNull(saved.getId());
         assertEquals(5, saved.getQuantity());
         assertEquals(new BigDecimal("100.50"), saved.getPrice());
-        assertEquals(project.getId(), saved.getProject().getId());
     }
 
     @Test
@@ -67,7 +66,7 @@ class ProjectItemRepositoryIntegrationTest extends AbstractIntegrationTest {
         item.setQuantity(1);
         item.setPrice(new BigDecimal("10.00"));
         item.setSinapiItem(sinapiItem);
-        item.setProject(null);
+
 
         assertThrows(DataIntegrityViolationException.class, () -> {
             projectItemRepository.saveAndFlush(item);
@@ -85,7 +84,6 @@ class ProjectItemRepositoryIntegrationTest extends AbstractIntegrationTest {
         ProjectItem item = new ProjectItem();
         item.setQuantity(1);
         item.setPrice(new BigDecimal("10.00"));
-        item.setProject(project);
         item.setSinapiItem(null);
 
         assertThrows(DataIntegrityViolationException.class, () -> {

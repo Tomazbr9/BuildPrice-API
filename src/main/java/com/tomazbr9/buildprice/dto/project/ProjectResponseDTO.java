@@ -10,7 +10,6 @@ public record ProjectResponseDTO(
         String clientName,
         String description,
         String uf,
-        BigDecimal bdi,
         Instant createdAt
 ) {
 }

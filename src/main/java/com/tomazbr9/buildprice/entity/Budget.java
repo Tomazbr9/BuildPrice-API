@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "budget")
+@Table(name = "tb_budgets")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

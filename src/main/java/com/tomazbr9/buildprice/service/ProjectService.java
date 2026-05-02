@@ -25,23 +25,21 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
-    private final ProjectItemRepository projectItemRepository;
 
-    public ProjectService(ProjectRepository projectRepository, UserRepository userRepository, ProjectItemRepository projectItemRepository){
+    public ProjectService(ProjectRepository projectRepository, UserRepository userRepository){
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
-        this.projectItemRepository = projectItemRepository;
     }
 
     public ProjectResponseDTO createProject(ProjectRequestDTO request, UUID userId){
 
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 
-        Project newProject = new Project(null, request.nameWork(), Instant.now(), request.clientName(), request.description(), request.uf(), user);
+        Project newProject = new Project(null, request.nameWork(), Instant.now(), request.description(), request.uf(), user);
 
         Project savedProject = projectRepository.save(newProject);
 
-        return new ProjectResponseDTO(savedProject.getId(), savedProject.getNameWork(), savedProject.getClientName(), savedProject.getDescription(), savedProject.getUf(), savedProject.getCreatedAt());
+        return new ProjectResponseDTO(savedProject.getId(), savedProject.getNameWork(), savedProject.getDescription(), savedProject.getUf(), savedProject.getCreatedAt());
 
     }
 
@@ -53,7 +51,6 @@ public class ProjectService {
                 .map(project -> new ProjectResponseDTO(
                         project.getId(),
                         project.getNameWork(),
-                        project.getClientName(),
                         project.getDescription(),
                         project.getUf(),
                         project.getCreatedAt()
@@ -67,7 +64,6 @@ public class ProjectService {
         return new ProjectResponseDTO(
                 project.getId(),
                 project.getNameWork(),
-                project.getClientName(),
                 project.getDescription(),
                 project.getUf(),
                 project.getCreatedAt());

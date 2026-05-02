@@ -31,14 +31,15 @@ public class Project  implements Serializable {
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
-    @Column(name = "client_name")
-    private String clientName;
-
     @Column(columnDefinition = "TEXT")
     private String description;
 
     @Column(nullable = false)
     private String uf;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id", nullable = false)
+    private Client client;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)

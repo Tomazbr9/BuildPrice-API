@@ -7,7 +7,6 @@ import java.util.UUID;
 public record ProjectResponseDTO(
         UUID id,
         String nameWork,
-        String clientName,
         String description,
         String uf,
         Instant createdAt

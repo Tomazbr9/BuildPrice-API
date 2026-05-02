@@ -13,8 +13,6 @@ public record ProjectRequestDTO(
         String description,
 
         @NotBlank(message = "uf é obrigatório")
-        String uf,
-
-        BigDecimal bdi
+        String uf
 ) {
 }

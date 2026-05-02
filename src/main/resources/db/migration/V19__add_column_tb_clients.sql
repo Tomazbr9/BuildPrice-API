@@ -1,0 +1,1 @@
+ALTER TABLE tb_clients ADD COLUMN cpf_cnpj VARCHAR(14) NOT NULL

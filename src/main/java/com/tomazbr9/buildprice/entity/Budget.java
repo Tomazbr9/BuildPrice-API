@@ -3,6 +3,7 @@ package com.tomazbr9.buildprice.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
@@ -14,7 +15,9 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-public class Budget {
+public class Budget implements Serializable {
+
+    private static final long seriaVersionUID = 1L;
 
     @Id
     @GeneratedValue

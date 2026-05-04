@@ -1,5 +1,6 @@
 package com.tomazbr9.buildprice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,6 +32,7 @@ public class ProjectItem implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "budget_id", nullable = false)
+    @JsonIgnore
     private Budget budget;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

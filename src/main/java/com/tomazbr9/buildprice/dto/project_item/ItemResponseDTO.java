@@ -11,7 +11,6 @@ public record ItemResponseDTO(
         String unit,
         String uf,
         Integer quantity,
-        BigDecimal price,
-        BigDecimal subTotal
+        BigDecimal price
 ) {
 }

@@ -4,11 +4,13 @@ import com.tomazbr9.buildprice.dto.project.ProjectRequestDTO;
 import com.tomazbr9.buildprice.dto.project.ProjectResponseDTO;
 import com.tomazbr9.buildprice.dto.project.ProjectWithItemsResponseDTO;
 import com.tomazbr9.buildprice.dto.project_item.ItemResponseDTO;
+import com.tomazbr9.buildprice.entity.Client;
 import com.tomazbr9.buildprice.entity.Project;
 import com.tomazbr9.buildprice.entity.ProjectItem;
 import com.tomazbr9.buildprice.entity.User;
 import com.tomazbr9.buildprice.exception.ProjectNotFoundException;
 import com.tomazbr9.buildprice.exception.UserNotFoundException;
+import com.tomazbr9.buildprice.repository.ClientRepository;
 import com.tomazbr9.buildprice.repository.ProjectItemRepository;
 import com.tomazbr9.buildprice.repository.ProjectRepository;
 import com.tomazbr9.buildprice.repository.UserRepository;
@@ -25,17 +27,21 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
+    private final ClientRepository clientRepository;
 
-    public ProjectService(ProjectRepository projectRepository, UserRepository userRepository){
+    public ProjectService(ProjectRepository projectRepository, UserRepository userRepository, ClientRepository clientRepository){
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
+        this.clientRepository = clientRepository;
     }
 
     public ProjectResponseDTO createProject(ProjectRequestDTO request, UUID userId){
 
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 
-        Project newProject = new Project(null, request.nameWork(), Instant.now(), request.description(), request.uf(), user);
+        Client client = clientRepository.findById(request.clientId()).orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+
+        Project newProject = new Project(null, request.nameWork(), Instant.now(), request.description(), request.uf(), client, user);
 
         Project savedProject = projectRepository.save(newProject);
 
@@ -75,24 +81,6 @@ public class ProjectService {
 
         projectRepository.delete(project);
 
-    }
-
-    private BigDecimal calculateWithOutBDI(List<ItemResponseDTO> items){
-        return items.stream()
-                .map(ItemResponseDTO::subTotal)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    private BigDecimal calculateWithBDI(BigDecimal subtotal, BigDecimal bdi){
-
-        BigDecimal fatorBdi = bdi.divide(new BigDecimal("100"), 4, RoundingMode.HALF_UP);
-        BigDecimal multiplier = BigDecimal.ONE.add(fatorBdi);
-
-        return subtotal.multiply(multiplier).setScale(2, RoundingMode.HALF_UP);
-    }
-
-    private BigDecimal calculeGrossMargin(BigDecimal totalWithOutBDI, BigDecimal totalWithBDI){
-        return totalWithBDI.subtract(totalWithOutBDI).setScale(2, RoundingMode.HALF_UP);
     }
 
 }

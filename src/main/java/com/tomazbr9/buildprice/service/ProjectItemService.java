@@ -46,8 +46,6 @@ public class ProjectItemService {
 
         ProjectItem savedItem = projectItemRepository.save(projectItem);
 
-        BigDecimal subtotal = calculateSubTotal(savedItem);
-
         return new ItemResponseDTO(
                 savedItem.getId(),
                 sinapiItem.getCodSinapi(),
@@ -56,8 +54,7 @@ public class ProjectItemService {
                 sinapiItem.getUnit(),
                 sinapiItem.getUf(),
                 savedItem.getQuantity(),
-                savedItem.getPrice(),
-                subtotal
+                savedItem.getPrice()
         );
     }
 
@@ -71,7 +68,6 @@ public class ProjectItemService {
         }
 
         ProjectItem savedItem = projectItemRepository.save(projectItem);
-        BigDecimal subtotal = calculateSubTotal(savedItem);
 
         return new ItemResponseDTO(
                 savedItem.getId(),
@@ -81,8 +77,7 @@ public class ProjectItemService {
                 sinapiItem.getUnit(),
                 sinapiItem.getUf(),
                 savedItem.getQuantity(),
-                savedItem.getPrice(),
-                subtotal
+                savedItem.getPrice()
         );
 
     }

@@ -23,10 +23,11 @@ public class SinapiController {
     public ResponseEntity<PageResponseDTO<SinapiItemResponseDTO>> searchItems(
             @RequestParam(defaultValue = "") String search,
             @RequestParam(required = false) String uf,
+            @RequestParam(required = false) String taxRelief, // ← retorna qual tabela ISD,ISE...
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size
     ) {
-        PageResponseDTO<SinapiItemResponseDTO> response = sinapiService.searchItems(search, uf, page, size);
+        PageResponseDTO<SinapiItemResponseDTO> response = sinapiService.searchItems(search, uf, taxRelief, page, size);
         return ResponseEntity.ok(response);
     }
 }

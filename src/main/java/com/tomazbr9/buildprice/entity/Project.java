@@ -45,4 +45,7 @@ public class Project  implements Serializable {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    private List<Budget> budgets;
+
 }

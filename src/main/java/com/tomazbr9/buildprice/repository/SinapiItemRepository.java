@@ -24,4 +24,17 @@ public interface SinapiItemRepository extends JpaRepository<SinapiItem, UUID> {
             String description,
             Pageable pageable
     );
+
+    Page<SinapiItem> findByDescriptionContainingIgnoreCaseAndUfAndTaxRelief(
+        String description,
+        String uf,
+        String taxRelief,
+        Pageable pageable
+    );
+
+    Page<SinapiItem> findByDescriptionContainingIgnoreCaseAndTaxRelief(
+        String description,
+        String taxRelief,
+        Pageable pageable
+    );
 }

@@ -10,5 +10,6 @@ public record SinapiItemResponseDTO(
         String classification,
         String unit,
         String uf,
+        String taxRelief,
         BigDecimal price
 ) {}

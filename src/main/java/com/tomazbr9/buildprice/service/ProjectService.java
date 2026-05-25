@@ -4,6 +4,7 @@ import com.tomazbr9.buildprice.dto.project.ProjectRequestDTO;
 import com.tomazbr9.buildprice.dto.project.ProjectResponseDTO;
 import com.tomazbr9.buildprice.dto.project.ProjectWithItemsResponseDTO;
 import com.tomazbr9.buildprice.dto.project_item.ItemResponseDTO;
+import com.tomazbr9.buildprice.entity.Budget;
 import com.tomazbr9.buildprice.entity.Client;
 import com.tomazbr9.buildprice.entity.Project;
 import com.tomazbr9.buildprice.entity.ProjectItem;
@@ -41,11 +42,21 @@ public class ProjectService {
 
         Client client = clientRepository.findById(request.clientId()).orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
-        Project newProject = new Project(null, request.nameWork(), Instant.now(), request.description(), request.uf(), client, user);
+        Project newProject = new Project(null, request.nameWork(), Instant.now(), request.description(), request.uf(), client, user, null);
 
         Project savedProject = projectRepository.save(newProject);
 
-        return new ProjectResponseDTO(savedProject.getId(), savedProject.getNameWork(), savedProject.getDescription(), savedProject.getUf(), savedProject.getCreatedAt());
+        return new ProjectResponseDTO(
+            savedProject.getId(),
+            savedProject.getNameWork(),
+            savedProject.getDescription(),
+            savedProject.getUf(),
+            savedProject.getCreatedAt(),
+            savedProject.getBudgets() == null ? List.of() :
+            savedProject.getBudgets().stream()
+                .map(Budget::getId)
+                .toList()
+        );
 
     }
 
@@ -55,11 +66,14 @@ public class ProjectService {
 
         return projects.stream()
                 .map(project -> new ProjectResponseDTO(
-                        project.getId(),
-                        project.getNameWork(),
-                        project.getDescription(),
-                        project.getUf(),
-                        project.getCreatedAt()
+                    project.getId(),
+                    project.getNameWork(),
+                    project.getDescription(),
+                    project.getUf(),
+                    project.getCreatedAt(),
+                    project.getBudgets() == null ? List.of() :
+                    project.getBudgets().stream()
+                .map(Budget::getId).toList()
                 )).toList();
     }
 
@@ -72,7 +86,12 @@ public class ProjectService {
                 project.getNameWork(),
                 project.getDescription(),
                 project.getUf(),
-                project.getCreatedAt());
+                project.getCreatedAt(),
+                project.getBudgets() == null ? List.of() :
+                project.getBudgets().stream()
+                .map(Budget::getId)
+                .toList()
+);
     }
 
     public void deleteProject(UUID projectId, UUID userId){
